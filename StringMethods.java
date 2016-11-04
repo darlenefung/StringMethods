@@ -96,6 +96,8 @@ public class StringMethods
 		System.out.println(convertItalics("_abc_123_xyz_"));
 		System.out.println(convertItalics("_abc_ 123 _xyz_"));
 		System.out.println(convertItalics("_abc_123"));
+		System.out.println(convertItalics("___abc___"));
+
 		System.out.println("-------10");
 
 		System.out.println(convertItalics("This is _very_ good."));
@@ -160,21 +162,27 @@ public class StringMethods
  		}
 
  		int start = 0;
- 		int Found1 = -1;
- 		int Found2 = -1;
+  		int Found1 = -1; // Found1 holds index of first underscore
+ 		int Found2 = -1;	// Found 2 holds index of second underscore
 		int x = 0;
  		String newString = "";
- 		while (start < line.length() && (x = findString(line, "_", start)) != -1)
+ 		
+ 		// loop until no more underscores are found
+ 		while ((x = findString(line, "_", start)) != -1)
 		{
  			if (Found1 > -1)
  			{
+ 				// Saves indes of second underscore
  				Found2 = x;
- 				if ((Found2 - Found1) != 1)
+ 				
+ 				// convert them if there are characters in between 
+ 				if ((Found2 - Found1) >  1)
  				{
  					newString += "<I>" + line.substring(Found1 + 1, Found2) + "</I>";
  				}
  				else
  				{
+ 					// appends underscores when nothing is between them 
  					newString += line.substring(Found1, Found2 + 1);
  				}
  				Found1 = -1;
@@ -182,7 +190,9 @@ public class StringMethods
  			}
  			else
  			{
+ 				// Saves index of first underscore
  				Found1 = x;
+ 				// appends all characters from start to Found1 (first underscore) to newString 
  				newString += line.substring(start, Found1);
  			}
  			start = x + 1;
